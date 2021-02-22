@@ -25,10 +25,13 @@ Wrap any optimizer with SAMWrapper, and use the optimize API.
 opt = tf.keras.optimizers.SGD(learning_rate)
 opt = SAMWarpper(opt, rho=0.05)
 
-def grad_func(inputs, labels):
+inputs = YOUR_BATCHED_INPUTS
+labels = YOUR_BATCHED_LABELS
+
+def grad_func():
     with tf.GradientTape() as tape:
         pred = model(inputs, training=True)
-        loss = loss_func(pd=pred, gt=label)
+        loss = loss_func(pd=pred, gt=labels)
     return pred, loss, tape
 
 opt.optimize(grad_func, model.trainable_variables)
